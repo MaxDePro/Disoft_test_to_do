@@ -1,0 +1,23 @@
+{% extends "to_do_taskmanager/home.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1>Login user</h1>
+        <br>
+        <br>
+        <form action="" method="post">
+            {% csrf_token %}
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password">
+              </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+
+{% endblock %}

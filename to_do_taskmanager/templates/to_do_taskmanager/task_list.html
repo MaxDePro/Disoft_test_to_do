@@ -1,0 +1,59 @@
+{% extends 'to_do_taskmanager/home.html' %}
+
+{% block content %}
+<div class="container">
+  <form method="get">
+    <label for="status">Filter by Status:</label>
+    <select name="status" id="status">
+        <option value="">All</option>
+        <option value="new">New</option>
+        <option value="in_progress">In Progress</option>
+        <option value="completed">Completed</option>
+    </select>
+    <input type="submit" value="Filter">
+</form>
+  <h1>Tasks list</h1>
+  <ul>
+
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Task title</th>
+      <th scope="col">Status task</th>
+      <th scope="col">Assigned</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for task in tasks %}
+    <tr>
+      <th scope="row">{{ task.id }}</th>
+      <td><li><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></li></td>
+      <td>{{ task.status }}</td>
+      <td>
+        {% for assignee in task.assigned_to.all %}
+        {{ assignee.username }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </td>
+    </tr>
+  {% endfor %}
+  {% for assigned_task in assigned_tasks %}
+    <tr>
+      <th scope="row">{{ assigned_task.id }}</th>
+      <td><li><a href="{% url 'task_detail' assigned_task.pk %}">{{ assigned_task.title }}</a></li></td>
+      <td>{{ assigned_task.status }}</td>
+      <td>
+        {% for assignee in task.assigned_to.all %}
+        {{ assignee.username }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+  </ul>
+</div>
+
+{% endblock %}
