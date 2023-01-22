@@ -27,32 +27,48 @@
                     {% endif %}
                 </ul>
                 <div class="d-flex" role="search">
-                  {% if user.is_authenticated %}
-                    <div class="container mt-2">
-                      Hello - {{ request.user.username }}
-                    </div>
+                    {% if user.is_authenticated %}
+                        <div class="container mt-2">
+                            Hello - {{ request.user.username }}
+                        </div>
 
-                    <a class="btn btn-danger" href="{% url 'logout_user' %}">logout</a>
-                  {% else %}
-                    <a class="btn btn-primary" href="{% url 'login_user' %}">login</a>
+                        <a class="btn btn-danger" href="{% url 'logout_user' %}">logout</a>
+                    {% else %}
+                        <a class="btn btn-primary" href="{% url 'login_user' %}">login</a>
                 {% endif %}
                 </div>
 
             </div>
         </div>
     </nav>
-{% if messages %}
 
+{% if messages %}
     {% for message in messages %}
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
     {% endfor %}
+{% endif %}
+
+{% if not user.is_authenticated %}
+<div class="container">
+    <h1>
+        For start using this to do web app you should login!
+    </h1>
+    <a class="btn btn-primary" href="{% url 'login_user' %}">login</a>
+</div>
 
 {% endif %}
-{% block content %}
 
+
+{% block content %}
+<div class="container">
+    <h1>
+        With this application, you can plan things more efficiently and always be aware of upcoming tasks,
+        including those assigned to you by other people.
+    </h1>
+</div>
 {% endblock %}
 </body>
 </html>

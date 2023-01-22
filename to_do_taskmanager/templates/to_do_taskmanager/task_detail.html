@@ -2,54 +2,57 @@
 
 {% block content %}
 <div class="container">
-  <div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">{{ task.title }}</h5>
-    <p class="card-text">{{ task.task_text }}</p>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">
-        Status: <b>{{ task.status }}</b>
-        {% if task.status != 'In Progress' %}
-            {% if can_change_status %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ task.title }}</h5>
+            <p class="card-text">{{ task.task_text }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+            Status: <b>{{ task.status }}</b>
+            {% if task.status != 'In Progress' %}
+                {% if can_change_status %}
                 <form action="{% url 'change_status' task.id %}" method="post">
                     {% csrf_token %}
                     <input type="submit" value="Take task">
                 </form>
+                {% endif %}
+            {% else %}
+
             {% endif %}
-        {% else %}
-
-        {% endif %}
-    </li>
-    <li class="list-group-item">
-      Assignees:
-      {% for assignee in task.assigned_to.all %}
-        {{ assignee.username }}{% if not forloop.last %}, {% endif %}
-      {% endfor %}</li>
-    <li class="list-group-item">Author: {{ task.author.username }}</li>
-    <li class="list-group-item">Creation Date: {{ task.created_at }}</li>
-    <li class="list-group-item">Last Edited Date: {{ task.edited_at }}</li>
-    {% if task.images %}
-        <li>
-            <img src="{{ task.images.url }}" alt="" width="200" height="200">
-        </li>
-    {% endif %}
-  </ul>
-  <div class="card-body">
-    <a href="{% url 'task_edit' task.id %}" class="card-link">Update</a>
-    <a href="{% url 'task_delete' task.id %}" class="card-link">Delete</a>
-  </div>
-  </p>
-    <div class="container">
-        <h2>Comments:</h2>
-        <ul>
-          {% for comment in comments %}
-            <li>"{{ comment.text }}" <small>by <b>{{ comment.author.username }}</b></small></li>
-          {% endfor %}
+            </li>
+            <li class="list-group-item">
+        Assignees:
+        {% for assignee in task.assigned_to.all %}
+            {{ assignee.username }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}</li>
+            <li class="list-group-item">Author: {{ task.author.username }}</li>
+            <li class="list-group-item">Creation Date: {{ task.created_at }}</li>
+            <li class="list-group-item">Last Edited Date: {{ task.edited_at }}</li>
+            {% if task.images %}
+            <li>
+                <img src="{{ task.images.url }}" alt="" width="200" height="200">
+            </li>
+            {% endif %}
         </ul>
-        <a href="{% url 'comment_create' task.pk %}">Leave a comment</a>
-
+        <div class="card-body">
+            <a href="{% url 'task_edit' task.id %}" class="card-link">Update</a>
+            <a href="{% url 'task_delete' task.id %}" class="card-link">Delete</a>
+        </div>
     </div>
+</div>
+    </p>
+<div class="container">
+    <h2>Comments:</h2>
+    <ul>
+        {% for comment in comments %}
+            <li>"{{ comment.text }}" <small>by <b>{{ comment.author.username }}</b></small></li>
+            <a href="{% url 'comment_create' task.pk %}">Leave a comment</a>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'comment_create' task.pk %}">Leave a comment</a>
+
+</div>
 
 
 {% endblock %}

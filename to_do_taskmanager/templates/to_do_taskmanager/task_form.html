@@ -2,12 +2,12 @@
 
 {% block content %}
 <div class="container">
-  <h1>{% if task %}Edit{% else %}Create{% endif %} Task</h1>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save">
-  </form>
+    <h1>{% if task %}Edit{% else %}Create{% endif %} Task</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save">
+    </form>
 </div>
 
 {% endblock %}
