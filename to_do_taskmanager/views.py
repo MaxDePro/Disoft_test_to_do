@@ -7,6 +7,7 @@ from .models import Task, Comment
 from django.db.models import Q
 from rest_framework import viewsets
 from .serializers import TaskSerializer
+from .tasks import send_task_email
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -71,9 +72,10 @@ def task_create(request):
         form = TaskForm(request.POST, request.FILES)
         if form.is_valid():
             task = form.save()
-            # task = form.save(commit=False)
-            # task.author = request.user
-            # task.save()
+            task = form.save(commit=False)
+            task.author = request.user
+            task.save()
+            send_task_email.delay(task.id)
             return redirect('task_detail', task_id=task.pk)
     else:
         form = TaskForm()
@@ -94,6 +96,7 @@ def task_edit(request, task_id):
         form = TaskForm(request.POST, request.FILES, instance=task)
         if form.is_valid():
             form.save()
+            send_task_email.delay(task.id)
             return redirect('task_detail', task_id=task.pk)
     else:
         form = TaskForm(instance=task)
